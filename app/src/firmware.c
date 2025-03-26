@@ -1,5 +1,6 @@
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/rcc.h>
+#include <libopencm3/cm3/scb.h>//SCB_VTOR ( vector table offset register)
 
 #include "core/system.h"
 #include "core/timer.h"
@@ -10,8 +11,18 @@
 #define EXT_LED_PORT (GPIOA)
 #define EXT_LED_PIN (GPIO0)
 
+#define BOOTLOADER_SIZE ( 0x8000U )
+
+// This is because when interrupts occur it will look at the vector table of the bootloader as it does not know of its own
+// and it is not the first code that is run the bootloader is
+// This tells the application that its vector table sits at 0x8000
+static void vector_setup(void){
+  SCB_VTOR = BOOTLOADER_SIZE;
+}
+
 
 static void GPIO_setup(void){
+  vector_setup();
   rcc_periph_clock_enable(RCC_GPIOC);
   rcc_periph_clock_enable(RCC_GPIOA);
 
