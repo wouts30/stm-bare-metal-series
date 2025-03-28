@@ -2,6 +2,17 @@
 #include <libopencm3/stm32/memorymap.h>
 #include <libopencm3/cm3/vector.h>
 
+#include <libopencm3/stm32/gpio.h>
+#include <libopencm3/stm32/rcc.h>
+
+#include "core/system.h"
+#include "core/uart.h"
+#include "comms.h"
+
+#define UART_PORT (GPIOA)
+#define UART_TX_PIN (GPIO9)
+#define UART_RX_PIN (GPIO10)
+
 #define BOOTLOADER_SIZE ( 0x8000U ) //32KiB
 #define MAIN_APP_START_ADDRESS ( FLASH_BASE + BOOTLOADER_SIZE )
 
@@ -39,12 +50,47 @@ static void jump_to_main(void) {
   //note: all of them compile to the same assembly
 }
 
+static void GPIO_setup(void){
+  rcc_periph_clock_enable(RCC_GPIOA);
+
+  gpio_mode_setup(UART_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, UART_TX_PIN | UART_RX_PIN);
+  gpio_set_af(UART_PORT, GPIO_AF7, UART_TX_PIN | UART_RX_PIN);
+
+}
+
 int main(void) {
   ////test linking to fail if bootloader is larger than 32 KiB
   // volatile uint8_t x = 0;
   // for (int i = 0; i < 0x8000; i++) {
   //   x += data[i];
   // }
+  
+  
+  system_setup();
+  GPIO_setup();
+  uart_setup();
+  comms_setup();
+
+  comms_packet_t packet = {
+    .length = 9,
+    .data = {1,2,3,4,5,6,7,8,9, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
+    .crc = 0
+  };
+  packet.crc = comms_copute_crc(&packet);
+  // packet.crc++;
+  comms_packet_t rxpacket;
+
+  while (1) {
+    comms_update();
+    if (comms_packets_available()) {
+      comms_read(&rxpacket);
+    }
+    comms_write(&packet);//check crc file for logpoint //TODO: check ITM
+    system_delay(500);
+    // comms_update();
+  }
+  //never unconfigure the gpio and setups that could cause interrupts to trigger 
+  // this can cause some problems if not configured to handel things in program
   
   jump_to_main();
 

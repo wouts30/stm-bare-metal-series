@@ -18,7 +18,7 @@ Disassembly of section .text:
  8000034:	00000000 	andeq	r0, r0, r0
  8000038:	080001bf 	stmdaeq	r0, {r0, r1, r2, r3, r4, r5, r7, r8}
  800003c:	080001bf 	stmdaeq	r0, {r0, r1, r2, r3, r4, r5, r7, r8}
- 8000040:	080001bd 	stmdaeq	r0, {r0, r2, r3, r4, r5, r7, r8}
+ 8000040:	080001bd 	saatmdaeq	r0, {r0, r2, r3, r4, r5, r7, r8}
  8000044:	080001bd 	stmdaeq	r0, {r0, r2, r3, r4, r5, r7, r8}
  8000048:	080001bd 	stmdaeq	r0, {r0, r2, r3, r4, r5, r7, r8}
  800004c:	080001bd 	stmdaeq	r0, {r0, r2, r3, r4, r5, r7, r8}

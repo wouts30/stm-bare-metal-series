@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "serialport": "^10.5.0"
+    "serialport": "^10.5.0",
+    "undici-types": "^7.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "@types/serialport": "^8.0.5"
   }
 }

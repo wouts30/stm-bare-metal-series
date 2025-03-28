@@ -1,5 +1,7 @@
 #include "core/crc.h"
 
+
+volatile int x = 0;
 uint8_t crc8(uint8_t* data, uint32_t length) {
   uint8_t crc = 0;
 
@@ -12,6 +14,7 @@ uint8_t crc8(uint8_t* data, uint32_t length) {
         crc <<= 1;
       }
     }
+    x++;//just to have this not be optimised away so we can place a log point to check the crc "0x%02x 0x%02x" data[i] crc
   }
 
   return crc;
@@ -34,4 +37,3 @@ uint32_t crc32(const uint8_t* data, const uint32_t length) {
 
    return ~crc;
 }
-

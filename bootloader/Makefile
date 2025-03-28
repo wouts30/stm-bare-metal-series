@@ -58,14 +58,14 @@ CSTD		?= -std=c99
 # Source files
 
 OBJS		+= $(SRC_DIR)/$(BINARY).o
-# OBJS		+= $(SRC_DIR)/comms.o
+OBJS		+= $(SRC_DIR)/comms.o
 # OBJS		+= $(SRC_DIR)/bl-flash.o
 # OBJS		+= $(SRC_DIR)/aes.o
-# OBJS		+= $(SHARED_SRC_DIR)/core/system.o
+OBJS		+= $(SHARED_SRC_DIR)/core/system.o
 # OBJS		+= $(SHARED_SRC_DIR)/core/simple-timer.o
-# OBJS		+= $(SHARED_SRC_DIR)/core/crc.o
-# OBJS		+= $(SHARED_SRC_DIR)/core/uart.o
-# OBJS		+= $(SHARED_SRC_DIR)/core/ring-buffer.o
+OBJS		+= $(SHARED_SRC_DIR)/core/crc.o
+OBJS		+= $(SHARED_SRC_DIR)/core/uart.o
+OBJS		+= $(SHARED_SRC_DIR)/core/ring-buffer.o
 
 ###############################################################################
 # C flags
@@ -75,6 +75,7 @@ TGT_CFLAGS	+= $(ARCH_FLAGS)
 TGT_CFLAGS	+= -Wextra -Wshadow -Wimplicit-function-declaration
 TGT_CFLAGS	+= -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes
 TGT_CFLAGS	+= -fno-common -ffunction-sections -fdata-sections
+TGT_CFLAGS  += -g -O0
 
 ###############################################################################
 # C++ flags
